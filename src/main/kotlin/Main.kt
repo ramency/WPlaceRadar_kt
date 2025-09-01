@@ -16,9 +16,11 @@ import java.io.File
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 suspend fun main() {
+    val path = System.getProperty("user.dir")
     val client = HttpClient(CIO)
 
-    SystemFileSystem.createDirectories(Path("/mapTiles"), false) // create new folder for the map pngs
+
+    SystemFileSystem.createDirectories(Path("$path/mapTiles"), false) // create new folder for the map pngs
 
     getMapTile(client, 100, 299) // example to test function
 
@@ -32,7 +34,7 @@ suspend fun getMapTile(client: HttpClient, tileX: Int, tileY: Int) {
     val out: ByteReadChannel = client.get {
         url("https://backend.wplace.live/files/s0/tiles/$tileX/$tileY.png")
         method = HttpMethod.Get
-    }.bodyAsChannel()
+        bodyAsChannel(). // Something Sommething as Channels
 
    out.copyAndClose(mapTilePNG.writeChannel())
 }
